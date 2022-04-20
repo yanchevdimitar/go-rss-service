@@ -4,28 +4,33 @@ services:
     build: ./docker/rabbitmq
     container_name: 'rabbitmq'
     ports:
-      - ${RB_QUEUE_PORT}:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - rabbitmq_go_net
-
-  db:
-    image: mariadb
-    container_name: 'db'
-    volumes:
-      - ./data/mysql/${MYSQL_DATABASE}:/var/lib/mysql
+  mysql:
+    image: mysql:5.7.12
+    container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    restart: always
+      MYSQL_ROOT_PASSWORD: password
     ports:
       - ${MYSQL_PORT}:3306
-
-networks:
-  rabbitmq_go_net:
-    driver: bridge
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin -h 127.0.0.1 -P 3306 -u${MYSQL_USER} -p${MYSQL_PASSWORD} ping --silent
+      interval: 10s
+      retries: 60
+  go:
+    build: .
+    container_name: 'go'
+    depends_on:
+      - rabbitmq
+      - mysql
+    links: [ "rabbitmq", "mysql" ]
+volumes:
+  mysql_data:

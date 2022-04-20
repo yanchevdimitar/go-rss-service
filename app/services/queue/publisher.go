@@ -70,7 +70,7 @@ func (c DefaultPublisher) Process() {
 
 func (c DefaultPublisher) Create() (publisher *rabbitmq.Publisher, err error) {
 	publisher, err = rabbitmq.NewPublisher(
-		"amqp://"+os.Getenv("RB_QUEUE_USER")+":"+os.Getenv("RB_QUEUE_PASS")+"@localhost:5672/",
+		"amqp://"+os.Getenv("RB_QUEUE_USER")+":"+os.Getenv("RB_QUEUE_PASS")+"@"+os.Getenv("RB_QUEUE_HOST"),
 		rabbitmq.Config{},
 		rabbitmq.WithPublisherOptionsLogging,
 	)
