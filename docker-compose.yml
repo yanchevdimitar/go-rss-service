@@ -17,6 +17,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: password
+    restart: always
     ports:
       - ${MYSQL_PORT}:3306
     volumes:
@@ -32,5 +33,6 @@ services:
       - rabbitmq
       - mysql
     links: [ "rabbitmq", "mysql" ]
+    restart: always
 volumes:
   mysql_data:
