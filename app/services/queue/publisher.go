@@ -49,7 +49,7 @@ func (c DefaultPublisher) Process() {
 				urls = append(urls, rss[url].URL)
 			}
 
-			rssItems, _ := reader.NewRssReader(urls, reader.NewRssParser()).Parse()
+			rssItems, _ := reader.NewDafaultReader(urls, reader.NewDefaultParser()).Parse()
 			feed, _ := json.Marshal(rssItems)
 
 			err = publisher.Publish(

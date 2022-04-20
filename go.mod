@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/joho/godotenv v1.4.0
 	github.com/wagslane/go-rabbitmq v0.8.0
-	github.com/yanchevdimitar/go-rss-reader v0.0.0-20220417103953-768ae14f7be3
+	github.com/yanchevdimitar/go-rss-reader v0.0.0-20220419132337-f94f1265e8fe
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.4
 )
@@ -18,6 +18,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rabbitmq/amqp091-go v1.3.0 // indirect
 	github.com/stretchr/objx v0.1.0 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.1 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
