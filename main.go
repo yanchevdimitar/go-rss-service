@@ -14,7 +14,7 @@ import (
 
 func main() {
 	currentWorkDirectory, _ := os.Getwd()
-	err := godotenv.Load(currentWorkDirectory + "/" + `/.env`)
+	err := godotenv.Load(currentWorkDirectory + `/.env`)
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")

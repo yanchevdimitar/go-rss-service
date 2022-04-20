@@ -37,6 +37,7 @@ func (c DefaultConsumer) Process() {
 	for {
 		select {
 		case <-ticker.C:
+			goroutines, _ := strconv.Atoi(os.Getenv("QUEUE_GOROUTINES"))
 			err = consumer.StartConsuming(
 				func(d rabbitmq.Delivery) rabbitmq.Action {
 					var rss database.RSS
@@ -54,7 +55,7 @@ func (c DefaultConsumer) Process() {
 				},
 				os.Getenv("QUEUE_CONSUMER"),
 				[]string{""},
-				rabbitmq.WithConsumeOptionsConcurrency(1),
+				rabbitmq.WithConsumeOptionsConcurrency(goroutines),
 				rabbitmq.WithConsumeOptionsQueueDurable,
 				rabbitmq.WithConsumeOptionsConsumerAutoAck(true),
 			)
