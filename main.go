@@ -32,13 +32,8 @@ func main() {
 
 func DBInit() *gorm.DB {
 	db, err := gorm.Open(mysql.New(mysql.Config{
-		DSN: "" + os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD") + "@tcp(127.0.0.1:" + os.Getenv("MYSQL_PORT") + ")/" +
+		DSN: "" + os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD") + "@tcp(" + os.Getenv("MYSQL_HOST") + ":" + os.Getenv("MYSQL_PORT") + ")/" +
 			os.Getenv("MYSQL_DATABASE") + "?charset=utf8&parseTime=True&loc=Local",
-		DefaultStringSize:         256,
-		DisableDatetimePrecision:  true,
-		DontSupportRenameIndex:    true,
-		DontSupportRenameColumn:   true,
-		SkipInitializeWithVersion: false,
 	}), &gorm.Config{})
 
 	if err != nil {

@@ -71,7 +71,7 @@ func (c DefaultConsumer) Process() {
 
 func (c DefaultConsumer) Create() (consumer rabbitmq.Consumer, err error) {
 	consumer, err = rabbitmq.NewConsumer(
-		"amqp://"+os.Getenv("RB_QUEUE_USER")+":"+os.Getenv("RB_QUEUE_PASS")+"@localhost:5672/",
+		"amqp://"+os.Getenv("RB_QUEUE_USER")+":"+os.Getenv("RB_QUEUE_PASS")+"@"+os.Getenv("RB_QUEUE_HOST"),
 		rabbitmq.Config{},
 		rabbitmq.WithConsumerOptionsLogging,
 	)
