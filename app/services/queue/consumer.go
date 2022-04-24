@@ -1,16 +1,17 @@
 package queue
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/wagslane/go-rabbitmq"
 
 	"github.com/yanchevdimitar/RSS-Reader-Service/app/database"
+	"github.com/yanchevdimitar/RSS-Reader-Service/app/dto"
 )
 
 type DefaultConsumer struct {
@@ -41,11 +42,12 @@ func (c DefaultConsumer) Process() {
 			err = consumer.StartConsuming(
 				func(d rabbitmq.Delivery) rabbitmq.Action {
 					var rss database.RSS
-					urls := strings.Split(string(d.Body), ",")
+					var urls []dto.Rss
+					err = json.Unmarshal(d.Body, &urls)
 					c.rssRepo.DeleteAll()
 
-					for i := range urls {
-						rss = database.RSS{URL: strings.ReplaceAll(urls[i], " ", "")}
+					for _, url := range urls {
+						rss = database.RSS{URL: url.URL}
 						result := c.rssRepo.Create(rss)
 						if result.Error != nil {
 							log.Printf("Consumed error: %v", result.Error)
