@@ -1,3 +1,5 @@
 # go-rss-service
-
-Create .env form .env.example, run docker-compose up -d
+```
+Create .env form .env.example
+Run:
+  docker-compose up -d
