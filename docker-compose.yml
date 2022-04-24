@@ -9,30 +9,39 @@ services:
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - rabbitmq_go_net
   mysql:
-    image: mysql:5.7.12
+    image: mysql:5.7.32
     container_name: mysql
+    tty: true
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: password
-    restart: always
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    restart: unless-stopped
     ports:
       - ${MYSQL_PORT}:3306
     volumes:
       - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: mysqladmin -h 127.0.0.1 -P 3306 -u${MYSQL_USER} -p${MYSQL_PASSWORD} ping --silent
-      interval: 10s
-      retries: 60
+    networks:
+      - rabbitmq_go_net
   go:
-    build: .
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     container_name: 'go'
     depends_on:
       - rabbitmq
       - mysql
     links: [ "rabbitmq", "mysql" ]
-    restart: always
+    restart: unless-stopped
+    networks:
+      - rabbitmq_go_net
 volumes:
   mysql_data:
+    driver: local
+networks:
+  rabbitmq_go_net:
+    driver: bridge
