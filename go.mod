@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/joho/godotenv v1.4.0
 	github.com/wagslane/go-rabbitmq v0.8.0
-	github.com/yanchevdimitar/go-rss-reader v0.0.0-20220419132337-f94f1265e8fe
+	github.com/yanchevdimitar/go-rss-reader v0.0.0-20220424062725-827fb1adee08
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.4
 )

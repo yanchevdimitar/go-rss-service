@@ -49,14 +49,15 @@ func (c DefaultPublisher) Process() {
 				urls = append(urls, rss[url].URL)
 			}
 
-			rssItems, _ := reader.NewDafaultReader(urls, reader.NewDefaultParser()).Parse()
-			feed, _ := json.Marshal(rssItems)
-
-			err = publisher.Publish(
-				feed,
-				[]string{os.Getenv("QUEUE_PUBLISHER")},
-				rabbitmq.WithPublishOptionsContentType("application/json"),
-			)
+			rssItems, _ := reader.NewDefaultReader(urls, reader.NewDefaultParser()).Parse()
+			if rssItems != nil {
+				feed, _ := json.Marshal(rssItems)
+				err = publisher.Publish(
+					feed,
+					[]string{os.Getenv("QUEUE_PUBLISHER")},
+					rabbitmq.WithPublishOptionsContentType("application/json"),
+				)
+			}
 			log.Println("Publisher...")
 			if err != nil {
 				log.Println(err)
